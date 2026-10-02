@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodLens AI — See What's Inside. Eat Smarter.</title>
+    <meta name="description" content="FoodLens AI is an intelligent food label scanner powered by machine learning that analyzes food ingredients based on your personalized health and dietary profile.">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="app-container navbar-inner">
+            <a href="{{ url_for('home') }}" class="brand-logo">
+                <div class="brand-icon">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Logo" width="34" height="34">
+                </div>
+                <span>FoodLens AI</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#trust" class="nav-link">Trust & Safety</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">☀️</button>
+                {% if session.get('user') %}
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary btn-sm">Scanner Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-secondary btn-sm">Sign In</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get Started</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="app-container" style="padding: 60px 0 80px; text-align: center;">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;" class="badge badge-brand">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens Mark" width="16" height="16">
+                    <span>AI-POWERED FOOD INTELLIGENCE</span>
+                </div>
+                
+                <h1 style="font-size: 52px; font-weight: 700; line-height: 1.15; letter-spacing: -1.5px; margin-bottom: 20px; color: var(--text-primary);">
+                    See What's Inside.<br><span style="color: var(--brand-primary);">Eat Smarter.</span>
+                </h1>
+                <p style="font-size: 19px; color: var(--text-secondary); margin-bottom: 36px; line-height: 1.6;">
+                    FoodLens AI analyzes food ingredient labels in real-time and provides personalized safety insights tailored specifically to your unique health conditions and dietary profile.
+                </p>
+                
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    {% if session.get('user') %}
+                        <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg">Start Scanning Food</a>
+                    {% else %}
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Start Scanning</a>
+                        <a href="#how-it-works" class="btn btn-secondary btn-lg">How It Works</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Stylized AI Hero Visual with FoodLens Lens Mark -->
+            <div class="card card-glass" style="max-width: 720px; margin: 60px auto 0; padding: 40px; position: relative; overflow: hidden; border-color: var(--border-hover);">
+                <div class="scan-line"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Lens" width="36" height="36">
+                        <div>
+                            <div class="badge badge-brand">AI SCANNING ANALYSIS</div>
+                            <h3 style="font-size: 18px; margin-top: 4px;">Food Label Scan Sample</h3>
+                        </div>
+                    </div>
+                    <span style="font-size: 13px; color: var(--brand-primary); font-weight: 600;">ACTIVE MATCH</span>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin: 30px 0;">
+                    <span class="badge badge-neutral" style="padding: 8px 16px; font-size: 14px;">Wheat Flour</span>
+                    <span class="badge badge-danger" style="padding: 8px 16px; font-size: 14px;">Refined Sugar (Flagged)</span>
+                    <span class="badge badge-success" style="padding: 8px 16px; font-size: 14px;">Sea Salt</span>
+                    <span class="badge badge-warning" style="padding: 8px 16px; font-size: 14px;">Whole Milk (Review)</span>
+                    <span class="badge badge-neutral" style="padding: 8px 16px; font-size: 14px;">Soy Lecithin</span>
+                </div>
+
+                <p style="font-size: 13px; color: var(--text-muted);">Visual illustration of FoodLens AI multi-word token extraction & safety profile matching.</p>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" style="background: var(--bg-secondary); padding: 80px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+            <div class="app-container" style="text-align: center;">
+                <span class="badge badge-brand" style="margin-bottom: 12px;">SIMPLE PROCESS</span>
+                <h2 style="font-size: 36px; font-weight: 700; margin-bottom: 16px;">How FoodLens AI Works</h2>
+                <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 50px;">Four seamless steps from food label capture to personalized ingredient intelligence.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; text-align: left;">
+                    <div class="card">
+                        <div style="font-size: 32px; font-weight: 800; color: var(--brand-primary); margin-bottom: 12px;">01</div>
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">SCAN</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Upload or capture a food label using your mobile or desktop camera.</p>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-size: 32px; font-weight: 800; color: var(--brand-primary); margin-bottom: 12px;">02</div>
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">EXTRACT</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Optical Character Recognition (OCR) parses and tokenizes raw ingredient lists.</p>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-size: 32px; font-weight: 800; color: var(--brand-primary); margin-bottom: 12px;">03</div>
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">ANALYZE</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Matches detected ingredients against your stored allergy, health, and diet profile.</p>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-size: 32px; font-weight: 800; color: var(--brand-primary); margin-bottom: 12px;">04</div>
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">RECOMMEND</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Discover suitable ingredient alternatives based on your food profile.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section with Minimalist SVG Icons -->
+        <section id="features" class="app-container" style="padding: 80px 0; text-align: center;">
+            <span class="badge badge-brand" style="margin-bottom: 12px;">CORE CAPABILITIES</span>
+            <h2 style="font-size: 36px; font-weight: 700; margin-bottom: 16px;">Designed for Your Health Awareness</h2>
+            <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 50px;">Clear, transparent, explainable food intelligence without medical jargon.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; text-align: left;">
+                <!-- Feature 1 -->
+                <div class="card card-hover">
+                    <div style="width: 42px; height: 42px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--brand-primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A2 2 0 0 0 6.5 23.5h11a2 2 0 0 0 1.78-2.95l-5.07-10.127A2 2 0 0 1 14 9.527V2"></path>
+                            <path d="M8.5 2h7"></path>
+                            <path d="M7 16h10"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 19px; font-weight: 600; margin-bottom: 8px;">Ingredient Intelligence</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Instant parsing of complex ingredient labels into clean, structured dataset entries.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="card card-hover">
+                    <div style="width: 42px; height: 42px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--brand-primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 19px; font-weight: 600; margin-bottom: 8px;">Personalized Profile Analysis</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Evaluates individual risks based on your registered allergies, conditions, and preferences.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="card card-hover">
+                    <div style="width: 42px; height: 42px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--brand-primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 19px; font-weight: 600; margin-bottom: 8px;">OCR Label Scanning</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Fast text extraction powered by Optical Character Recognition with camera capture support.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="card card-hover">
+                    <div style="width: 42px; height: 42px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--brand-primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 19px; font-weight: 600; margin-bottom: 8px;">Alternative Recommendations</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Discover healthier, diet-compatible food substitutes mapped specifically for your needs.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="card card-hover">
+                    <div style="width: 42px; height: 42px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--brand-primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 19px; font-weight: 600; margin-bottom: 8px;">Explainable Results</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Every flagged ingredient provides clear, transparent reasons detailing why it matched.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="card card-hover">
+                    <div style="width: 42px; height: 42px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--brand-primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 19px; font-weight: 600; margin-bottom: 8px;">Secure & Private Profiles</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Encrypted password storage, session cookie protection, and secure data handling.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Section -->
+        <section id="trust" style="background: var(--bg-secondary); padding: 60px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+            <div class="app-container" style="max-width: 800px; text-align: center;">
+                <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary);">Personalized Insights, Not Medical Diagnosis</h2>
+                <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                    FoodLens AI is designed to enhance your food awareness by cross-referencing detected ingredients against your stored dietary profile and verified food databases. Results represent informational guidance to help you make informed eating decisions.
+                </p>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="app-container" style="padding: 80px 0; text-align: center;">
+            <div class="card card-glass" style="padding: 60px 30px; background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-elevated)); border-color: var(--brand-primary);">
+                <h2 style="font-size: 38px; font-weight: 700; margin-bottom: 16px;">Know what you're eating.</h2>
+                <p style="color: var(--text-secondary); font-size: 18px; margin-bottom: 32px;">Scan your first ingredient label with FoodLens AI today.</p>
+                <a href="{{ url_for('register') if not session.get('user') else url_for('upload') }}" class="btn btn-primary btn-lg">Start Your First Scan</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="app-container footer-inner">
+            <div>
+                <a href="{{ url_for('home') }}" class="brand-logo" style="margin-bottom: 8px;">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Logo" width="28" height="28">
+                    </div>
+                    <span style="font-size: 18px;">FoodLens AI</span>
+                </a>
+                <p style="font-size: 13px; color: var(--text-muted);">See What's Inside. Eat Smarter.</p>
+            </div>
+
+            <ul class="footer-links">
+                <li><a href="{{ url_for('home') }}" class="footer-link">Home</a></li>
+                <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+                <li><a href="{{ url_for('login') }}" class="footer-link">Sign In</a></li>
+                <li><a href="{{ url_for('register') }}" class="footer-link">Register</a></li>
+            </ul>
+
+            <p style="font-size: 13px; color: var(--text-muted); width: 100%; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                &copy; 2026 FoodLens AI. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

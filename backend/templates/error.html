@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error {{ code if code else '' }} — FoodLens AI</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="app-container navbar-inner">
+            <a href="{{ url_for('home') }}" class="brand-logo">
+                <div class="brand-icon">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Logo" width="34" height="34">
+                </div>
+                <span>FoodLens AI</span>
+            </a>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">☀️</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content" style="display: flex; align-items: center;">
+        <div class="app-container" style="max-width: 560px; text-align: center;">
+            <div class="card card-glass" style="padding: 48px 32px;">
+                <span class="badge badge-danger" style="margin-bottom: 16px;">ERROR {{ code if code else 'NOTICE' }}</span>
+                <h1 style="font-size: 28px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px;">
+                    {{ title or "Something went wrong" }}
+                </h1>
+                <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 32px;">
+                    {{ message or "We couldn't complete that request. Please try again or return to the scanner." }}
+                </p>
+
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary">Back to Scanner</a>
+                    <a href="{{ url_for('home') }}" class="btn btn-secondary">Go to Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="app-container footer-inner">
+            <p style="font-size: 13px; color: var(--text-muted);">&copy; 2026 FoodLens AI. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('home') }}" class="footer-link">Home</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

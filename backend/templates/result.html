@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligence Report — FoodLens AI</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="app-container navbar-inner">
+            <a href="{{ url_for('home') }}" class="brand-logo">
+                <div class="brand-icon">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Logo" width="34" height="34">
+                </div>
+                <span>FoodLens AI</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('upload') }}" class="nav-link">Scan Food</a></li>
+                    <li><a href="{{ url_for('results') }}" class="nav-link active">Report</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <span class="user-badge">👤 {{ username }}</span>
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">☀️</button>
+                <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="app-container" style="max-width: 900px;">
+            
+            <!-- Page Title Header -->
+            <div style="text-align: left; margin-bottom: 32px;">
+                <span class="badge badge-brand" style="margin-bottom: 12px;">FOOD INGREDIENT REPORT</span>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary);">Personalized Ingredient Insights</h1>
+                <p style="font-size: 15px; color: var(--text-secondary); margin-top: 4px;">
+                    Analysis evaluated against <b>{{ username }}</b>'s stored profile.
+                </p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category in ['danger', 'error'] else category }}">
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Summary Metrics Cards Grid -->
+            {% set unsafe_count = unsafe_ingredients | length if unsafe_ingredients else 0 %}
+            {% set total_count = analysis_results | length if analysis_results else 0 %}
+
+            <div class="summary-card-grid">
+                <div class="summary-metric-card">
+                    <div class="metric-label">Detected Ingredients</div>
+                    <div class="metric-number" style="color: var(--brand-primary);">{{ total_count }}</div>
+                </div>
+
+                <div class="summary-metric-card">
+                    <div class="metric-label">Potential Concerns</div>
+                    <div class="metric-number" style="color: {{ 'var(--status-concern-border)' if unsafe_count > 0 else 'var(--status-safe-border)' }};">
+                        {{ unsafe_count }}
+                    </div>
+                </div>
+
+                <div class="summary-metric-card">
+                    <div class="metric-label">Overall Assessment</div>
+                    <div style="margin-top: 8px;">
+                        {% if unsafe_count > 0 %}
+                            <span class="badge badge-danger">Potential Concerns Found</span>
+                        {% else %}
+                            <span class="badge badge-success">Profile Compatible</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- OCR Raw Extracted Text Box -->
+            {% if extracted_text %}
+                <div style="margin-bottom: 32px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary);">📜 Raw Extracted OCR Label Text</h3>
+                        <button class="btn btn-ghost btn-sm copy-text-btn" data-target="raw-ocr-text">Copy Text</button>
+                    </div>
+                    <div id="raw-ocr-text" class="ocr-text-box">{{ extracted_text }}</div>
+                </div>
+            {% endif %}
+
+            <!-- Ingredient Intelligence Card Breakdown -->
+            <div style="margin-bottom: 40px; text-align: left;">
+                <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--text-primary);">
+                    🔍 Ingredient Analysis Breakdown
+                </h3>
+
+                {% if analysis_results %}
+                    {% for item in analysis_results %}
+                        {% set is_unsafe = (item.status == 'Not Safe ❌') %}
+                        {% set is_safe = (item.status == 'Safe ✅') %}
+                        
+                        <div class="ingredient-card-item {{ 'status-unsafe' if is_unsafe else ('status-safe' if is_safe else 'status-neutral') }}">
+                            <div class="ingredient-item-header">
+                                <span class="ingredient-item-name">{{ item.ingredient }}</span>
+                                {% if is_unsafe %}
+                                    <span class="badge badge-danger">⚠ Potential Concern</span>
+                                {% elif is_safe %}
+                                    <span class="badge badge-success">✓ Suitable for profile</span>
+                                {% else %}
+                                    <span class="badge badge-warning">! Review Ingredient</span>
+                                {% endif %}
+                            </div>
+
+                            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-top: 6px;">
+                                {{ item.description }}
+                            </p>
+
+                            {% if item.reasons %}
+                                <div class="reason-tag-list">
+                                    {% for reason in item.reasons %}
+                                        <span class="reason-tag">{{ reason | replace('*', '') }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="card" style="text-align: center; padding: 40px;">
+                        <p style="color: var(--text-secondary);">No ingredient analysis results available.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Alternative Recommendation CTA Banner -->
+            {% if unsafe_count > 0 %}
+                <div class="card card-glass" style="margin-bottom: 32px; background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-elevated)); border-color: var(--status-review-border); text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div>
+                            <span class="badge badge-warning" style="margin-bottom: 8px;">ALTERNATIVES AVAILABLE</span>
+                            <h3 style="font-size: 20px; font-weight: 700; color: var(--text-primary);">Explore Healthier Food Alternatives</h3>
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">
+                                We found substitute options for {{ unsafe_count }} flagged ingredient(s) in your report.
+                            </p>
+                        </div>
+                        <a href="{{ url_for('recommendation') }}" class="btn btn-primary btn-lg">
+                            🔄 View Recommendations
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Bottom Navigation Bar -->
+            <div style="display: flex; gap: 16px; justify-content: center; margin-top: 32px; flex-wrap: wrap;">
+                <a href="{{ url_for('upload') }}" class="btn btn-secondary">Scan Another Food Label</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-ghost">Logout</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="app-container footer-inner">
+            <p style="font-size: 13px; color: var(--text-muted);">&copy; 2026 FoodLens AI. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('home') }}" class="footer-link">Home</a></li>
+                <li><a href="{{ url_for('upload') }}" class="footer-link">Scanner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

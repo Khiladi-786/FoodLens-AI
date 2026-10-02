@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative Recommendations — FoodLens AI</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="app-container navbar-inner">
+            <a href="{{ url_for('home') }}" class="brand-logo">
+                <div class="brand-icon">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Logo" width="34" height="34">
+                </div>
+                <span>FoodLens AI</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('upload') }}" class="nav-link">Scanner</a></li>
+                    <li><a href="{{ url_for('results') }}" class="nav-link">Report</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <span class="user-badge">👤 {{ username }}</span>
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">☀️</button>
+                <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="app-container" style="max-width: 860px;">
+            
+            <!-- Page Title Header -->
+            <div style="text-align: left; margin-bottom: 32px;">
+                <span class="badge badge-brand" style="margin-bottom: 12px;">SUBSTITUTE INTELLIGENCE</span>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary);">Alternative Recommendations</h1>
+                <p style="font-size: 15px; color: var(--text-secondary); margin-top: 4px;">
+                    Options that may better fit <b>{{ username }}</b>'s current dietary profile.
+                </p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category in ['danger', 'error'] else category }}">
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Recommendation Cards List -->
+            {% if unsafe_ingredients %}
+                <div style="margin-bottom: 32px; text-align: left;">
+                    {% for ingredient in unsafe_ingredients %}
+                        {% set alt_value = recommendations.get(ingredient.lower(), "No suitable alternative found.") %}
+                        
+                        <div class="card card-hover" style="margin-bottom: 16px; padding: 24px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+                                <div>
+                                    <span class="badge badge-danger" style="margin-bottom: 6px;">FLAGGED INGREDIENT</span>
+                                    <h3 style="font-size: 20px; font-weight: 700; color: var(--text-primary);">
+                                        {{ ingredient.capitalize() }}
+                                    </h3>
+                                </div>
+                                <span style="font-size: 24px; color: var(--brand-primary);">➔</span>
+                                <div style="text-align: right;">
+                                    <span class="badge badge-success" style="margin-bottom: 6px;">RECOMMENDED SUBSTITUTE</span>
+                                    <h3 style="font-size: 20px; font-weight: 700; color: var(--brand-primary);">
+                                        {{ alt_value.capitalize() }}
+                                    </h3>
+                                </div>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                                Alternative suggestion based on direct ingredient dictionary mapping and Word2Vec semantic similarity embeddings.
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card" style="text-align: center; padding: 48px; margin-bottom: 32px;">
+                    <span class="badge badge-success" style="margin-bottom: 12px;">NO UNHEALTHY FLAGS</span>
+                    <h3 style="font-size: 20px; color: var(--text-primary);">No unsafe ingredients detected</h3>
+                    <p style="color: var(--text-secondary); margin-top: 8px;">All extracted ingredients were compatible with your current profile.</p>
+                </div>
+            {% endif %}
+
+            <!-- Action Navigation Buttons -->
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('results') }}" class="btn btn-secondary">Back to Analysis Report</a>
+                <a href="{{ url_for('upload') }}" class="btn btn-primary">Scan Another Food</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="app-container footer-inner">
+            <p style="font-size: 13px; color: var(--text-muted);">&copy; 2026 FoodLens AI. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('home') }}" class="footer-link">Home</a></li>
+                <li><a href="{{ url_for('results') }}" class="footer-link">Report</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

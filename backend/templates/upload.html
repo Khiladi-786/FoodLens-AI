@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Scanner — FoodLens AI</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="app-container navbar-inner">
+            <a href="{{ url_for('home') }}" class="brand-logo">
+                <div class="brand-icon">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="FoodLens AI Logo" width="34" height="34">
+                </div>
+                <span>FoodLens AI</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('upload') }}" class="nav-link active">Scanner</a></li>
+                    <li><a href="{{ url_for('results') }}" class="nav-link">Results</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <span class="user-badge">👤 {{ session.get('user', 'Guest') }}</span>
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">☀️</button>
+                <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="app-container" style="max-width: 860px;">
+            
+            <!-- Dashboard Welcome Banner -->
+            <div style="text-align: left; margin-bottom: 32px;">
+                <span class="badge badge-brand" style="margin-bottom: 12px;">FOOD SCANNER DASHBOARD</span>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary);">
+                    Good to see you, {{ session.get('user', 'User') }}.
+                </h1>
+                <p style="font-size: 16px; color: var(--text-secondary); margin-top: 4px;">
+                    What's in your food? Upload or capture an ingredient label to begin your personalized AI analysis.
+                </p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category in ['danger', 'error'] else category }}">
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Main Scanner Drag-and-Drop Card -->
+            <div class="card card-glass" style="text-align: center;">
+                <form method="POST" enctype="multipart/form-data" id="upload-form">
+                    
+                    <div id="upload-dropzone" class="upload-dropzone">
+                        <div class="dropzone-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Drag & Drop your food label here</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">
+                            Supported formats: JPG, JPEG, PNG (Max 16 MB)
+                        </p>
+
+                        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-upload').click()">
+                                📁 Browse Image
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="openCameraModal()">
+                                📷 Use Camera
+                            </button>
+                        </div>
+
+                        <!-- Hidden File Input -->
+                        <input id="file-upload" type="file" name="image" accept="image/png, image/jpeg, image/jpg" style="display: none;">
+                        
+                        <!-- Hidden Camera Base64 Input -->
+                        <input type="hidden" name="captured-image" id="captured-image">
+                    </div>
+
+                    <!-- Image Preview Container -->
+                    <div id="preview-container" style="display: none; margin-top: 24px;">
+                        <h4 style="font-size: 15px; color: var(--text-secondary); margin-bottom: 12px;">Image Preview Selected:</h4>
+                        <div class="preview-image-box">
+                            <img id="preview-image" src="" alt="Food Label Preview">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button id="uploadButton" type="submit" class="btn btn-primary btn-lg">
+                                🔍 Analyze Food Ingredients
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Profile Overview Summary Card -->
+            <div class="card" style="margin-top: 32px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-primary);">Active Profile Safeguards</h3>
+                    <span class="badge badge-brand">PERSONALIZED</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+                    FoodLens AI cross-references extracted labels with your saved account attributes to detect allergens, health risks, and dietary restrictions.
+                </p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="badge badge-neutral">User: {{ session.get('user', 'Guest') }}</span>
+                    <span class="badge badge-neutral">Analysis Engine: Standard Rule Match + Word2Vec</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- WebCam Camera Capture Modal -->
+    <div id="camera-modal" class="camera-modal">
+        <div class="camera-view-container">
+            <video id="camera-feed" autoplay></video>
+            <canvas id="camera-canvas" style="display: none;"></canvas>
+            <div class="scan-line"></div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center; color: #ffffff;">
+            <p style="font-size: 16px; margin-bottom: 16px;">Align ingredient label & press <b>Spacebar</b> or tap button below to capture.</p>
+            <div style="display: flex; gap: 16px; justify-content: center;">
+                <button type="button" class="btn btn-primary" onclick="captureCameraFrame()">📸 Capture Photo</button>
+                <button type="button" class="btn btn-secondary" onclick="closeCameraModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="app-container footer-inner">
+            <p style="font-size: 13px; color: var(--text-muted);">&copy; 2026 FoodLens AI. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('home') }}" class="footer-link">Home</a></li>
+                <li><a href="{{ url_for('upload') }}" class="footer-link">Scanner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

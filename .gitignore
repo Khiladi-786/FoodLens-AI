@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Environment / secrets
+.env
+.env.*
+
+# Local database
+backend/users.db
+
+# User-uploaded files
+backend/static/uploads/*
+
+# macOS
+.DS_Store
+
+# Local scratch
+scratch/
+
+# IDE
+.vscode/
+.idea/

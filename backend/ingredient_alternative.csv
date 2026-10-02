@@ -1,0 +1,144 @@
+Ingredient,Alternative,Category
+Whole Milk,Oat Milk,Dairy Substitute
+Skim Milk,Soy Milk,Dairy Substitute
+Butter,Avocado Puree,Fat
+Peanut Butter,Almond Butter,Spread
+Palm Oil,Sunflower Oil,Fat
+Coconut Oil,Canola Oil,Fat
+Vegetable Oil,Ghee,Fat
+Margarine,Apple Sauce,Fat
+Sugar,Stevia,Sweetener
+Brown Sugar,Coconut Sugar,Sweetener
+Powdered Sugar,Blended Maple Sugar,Sweetener
+Honey,Date Syrup,Sweetener
+Corn Syrup,Molasses,Sweetener
+Wheat Flour,Chickpea Flour,Flour
+All-Purpose Flour,Rice Flour,Flour
+Bread Crumbs,Crushed Oats,Coating
+Pasta,Whole Wheat Pasta,Grain Substitute
+White Rice,Brown Rice,Grain
+White Bread,Ezekiel Bread,Bread
+Cornstarch,Tapioca Starch,Thickener
+Mayonnaise,Avocado Mayo,Condiment
+Soy Sauce,Tamari,Condiment
+Ketchup,Tomato Paste + Vinegar,Condiment
+Mustard,Dijon Mustard,Condiment
+Vinegar,Apple Cider Vinegar,Acidic Agent
+Cream Cheese,Ricotta Cheese,Dairy Substitute
+Sour Cream,Greek Yogurt,Dairy Substitute
+Heavy Cream,Blended Cashews,Dairy Substitute
+Ice Cream,Coconut Milk Ice Cream,Dessert
+Whipped Cream,Aquafaba,Dairy Substitute
+Coffee,Dandelion Root Tea,Beverage
+Tea,Rooibos Tea,Beverage
+Ground Beef,Black Beans,Protein
+Chicken,Seitan,Protein
+Fish,Jackfruit,Meat Substitute
+Shrimp,King Oyster Mushrooms,Seafood Substitute
+Tuna,Chickpeas,Seafood Substitute
+Bacon,Smoked Eggplant,Protein
+Sausage,Lentil Sausage,Protein
+Cheese,Cashew Cheese,Dairy Substitute
+Parmesan,Nutritional Yeast,Dairy Substitute
+Yogurt,Almond Yogurt,Dairy Substitute
+Eggs,Mashed Banana,Binder
+Egg Whites,Aquafaba,Binder
+Potato,Turnips,Vegetable
+Carrots,Parsnips,Vegetable
+Bell Peppers,Pimento Peppers,Vegetable
+Green Beans,Sugar Snap Peas,Vegetable
+Spinach,Collard Greens,Leafy Green
+Lettuce,Napa Cabbage,Leafy Green
+Cucumber,Zucchini,Vegetable
+Mushrooms,Eggplant,Vegetable
+Garlic,Garlic Powder,Seasoning
+Onion,Shallots,Vegetable
+Celery,Fennel Stalks,Vegetable
+Ginger,Galangal,Spice
+Lemons,Limes,Citrus
+Oranges,Tangerines,Citrus
+Apples,Pears,Fruit
+Bananas,Mangos,Fruit
+Peaches,Plums,Fruit
+Strawberries,Raspberries,Fruit
+Blueberries,Blackberries,Fruit
+Pineapple,Papaya,Fruit
+Almonds,Hazelnuts,Nut
+Walnuts,Pecans,Nut
+Cashews,Macadamia Nuts,Nut
+Chia Seeds,Flaxseeds,Seed
+Sunflower Seeds,Pumpkin Seeds,Seed
+Baking Powder,Baking Soda + Lemon Juice,Baking Agent
+Baking Soda,Potassium Bicarbonate,Baking Agent
+Chocolate,Cacao Nibs,Sweetener
+Cocoa Powder,Carob Powder,Sweetener
+Cooking Wine,Grape Juice + Vinegar,Cooking Liquid
+Beer,Malted Barley Tea,Beverage
+Red Wine,Pomegranate Juice,Beverage
+White Wine,White Grape Juice,Beverage
+Rum,Vanilla Extract,Beverage
+Vodka,Apple Cider Vinegar,Beverage
+milk,oat milk,Dairy Substitute
+peanut,almond,Nut Substitute
+peanuts,almonds,Nut Substitute
+almond,cashew,Nut Substitute
+rice,quinoa,Grain Substitute
+wheat,buckwheat,Grain Substitute
+bread,gluten-free bread,Bakery Substitute
+Cream,coconut cream,Dairy Substitute
+Dextrose,malt sugar,Sweetener
+Greek yogurt,cashew yogurt,Dairy Substitute
+Pasteurized toned milk,Almond Milk,Dairy Substitute
+Enzyme (B-galactosidase),Lactase Supplements,Enzyme Substitute
+Blueberry syrup,Maple Syrup,Sweetener
+Citric acid,Ascorbic Acid,Acid Substitute
+Semolina,Rice Flour,Grain Substitute
+Refined wheat flour,Almond Flour,Grain Substitute
+Refined palm oil,Olive Oil,Oil/Fat Substitute
+Skimmed milk powder,Soy Milk Powder,Dairy Substitute
+Baking powder,Club Soda,Bakery Substitute
+Malt extract,Molasses,Sweetener
+Cornstarch,Arrowroot Powder,Thickener
+Glucose Syrup,Stevia,Sweetener
+Palm Kernel Oil,Olive Oil,Oil/Fat Substitute
+Soybean Oil,Olive Oil,Oil/Fat Substitute
+Honey Powder,Stevia Powder,Sweetener
+Tree Nuts,Sunflower Seeds,Nut Substitute
+Red Pepper Flakes,Paprika,Spice Substitute
+Calcium Carbonate,Calcium Citrate,Mineral Supplement
+Dicalcium Phosphate,Calcium Citrate,Mineral Supplement
+White Vinegar,Apple Cider Vinegar,Acid Substitute
+Banana Pulp,Avocado,Fruit Substitute
+Concentrated Lemons,Lime Extract,Fruit Substitute
+Papaya Pulp,Mango Pulp,Fruit Substitute
+Pear Pulp,Applesauce,Juice Substitute
+Apple Juice,Unsweetened Cranberry Juice,Juice Substitute
+Pineapple Juice,Mango Juice,Juice Substitute
+Orange Juice,Lemon Juice,Fruit Substitute
+Mango Pulp,Papaya Pulp,Juice Substitute
+Grape Juice,Unsweetened Pomegranate Juice,Thickener
+Thickener (440) (Pectin),Agar Agar,Preservative
+Preservative (202) (Potassium Sorbate),Vitamin C (Ascorbic Acid),Vitamin Supplement
+Vitamin B3 (Niacin),Peanuts,Dairy-Free Dessert
+Dairy-Based Dessert with White Chocolate & Raspberries,Coconut Cream Dessert,Dairy Substitute
+Whipping Cream (Milk),Coconut Cream,Dairy Substitute
+Full Fat Soft Cheese (Milk) (21%),Cashew Cheese,Chocolate Substitute
+White Chocolate (20%),Vegan White Chocolate,Fruit Substitute
+Raspberries (3.5%),Strawberries,Fruit Substitute
+Raspberry Pur�e (1%),Strawberry Pur�e,Thickener
+Cornflour,Arrowroot Powder,Gelling Agent
+Pork Gelatine,Agar Agar,Dairy Substitute
+Dried Whole Milk,Coconut Milk Powder,Dairy Substitute
+Dried Skimmed Milk,Almond Milk Powder,Fat Substitute
+Milk Fat,Coconut Oil,Natural Color
+Colouring Agent: Anthocyanins (from Carrot),Beet Juice Powder,Natural Color
+Colouring Agent: E172 (Iron Oxides & Hydroxides),Natural Cocoa Powder,Natural Color
+Colouring Agent: E120 (Cochineal/Carminic Acid),Hibiscus Extract,Emulsifier
+Emulsifier: E476 (Polyglycerol Polyricinoleate - PGPR),Sunflower Lecithin,Oil/Fat Substitute
+Stabiliser: Gum Arabic,Xanthan Gum,Flavoring Substitute
+Shea Oil,Cocoa Butter,Natural Color
+Concentrated Radishes,Carrot Extract,Chocolate Substitute
+Fat Reduced Cocoa Powder,Unsweetened Cocoa Powder,Glazing Agent
+Glazing Agent: Beeswax,Carnauba Wax,Natural Flavor
+Concentrated Blackcurrants,Pomegranate Extract,Stabilizer
+Whey,Pea Protein,Protein Substitute
