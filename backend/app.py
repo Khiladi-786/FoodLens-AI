@@ -1,7 +1,14 @@
+import os
+import sys
+
+# Ensure backend directory is in sys.path for relative imports across execution environments
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_cors import CORS
 import sqlite3
-import os
 import json
 import bcrypt
 import base64
@@ -15,8 +22,6 @@ from werkzeug.utils import secure_filename
 from ocr import extract_text  # OCR Function
 from ml_lookup import check_allergen_risk  # ML Model for Risk Assessment
 from alternative import get_alternative  # Alternative Food Recommender
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Setup Logging
 logging.basicConfig(
@@ -32,9 +37,16 @@ app = Flask(__name__,
 
 # 1. Secret Key Security
 secret_key = os.environ.get('FLASK_SECRET_KEY')
+is_production = bool(os.environ.get('RENDER') or os.environ.get('FLASK_ENV') == 'production' or os.environ.get('ENV') == 'production')
+
 if not secret_key:
-    logger.warning("⚠️ FLASK_SECRET_KEY not found in environment. Using development fallback secret.")
-    secret_key = 'dev_fallback_secret_key_foodlens_ai_2026'
+    if is_production:
+        logger.critical("🚨 CRITICAL: FLASK_SECRET_KEY environment variable is missing in production! Please configure FLASK_SECRET_KEY in Render environment settings.")
+        raise RuntimeError("FLASK_SECRET_KEY environment variable must be set in production.")
+    else:
+        logger.warning("⚠️ FLASK_SECRET_KEY not found in environment. Using development fallback secret.")
+        secret_key = 'dev_fallback_secret_key_foodlens_ai_2026'
+
 app.secret_key = secret_key
 
 CORS(app)
@@ -45,7 +57,12 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() in ('true', '1')
 
 # 3. File Upload & Database Configuration
-DATABASE = os.path.join(BASE_DIR, 'users.db')
+# Support persistent storage mounts (e.g., Render Persistent Disks) via FOODLENS_DB_PATH
+DATABASE = os.environ.get('FOODLENS_DB_PATH', os.path.join(BASE_DIR, 'users.db'))
+db_dir = os.path.dirname(DATABASE)
+if db_dir:
+    os.makedirs(db_dir, exist_ok=True)
+
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -421,6 +438,11 @@ def internal_server_error(e):
     logger.error(f"500 Internal Error on {request.url}", exc_info=e)
     return render_template('error.html', code=500, title="Server Error", message="An unexpected error occurred. Our team has been notified."), 500
 
+# Initialize the database when the application starts,
+# including when launched by a production WSGI server.
+init_db()
+
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() in ('true', '1')
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

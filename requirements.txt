@@ -1,0 +1,14 @@
+# FoodLens AI - Production Dependencies
+Flask>=3.0.0,<3.2.0
+Flask-Cors>=4.0.0
+gunicorn>=21.2.0
+bcrypt>=4.0.0
+Pillow>=10.0.0
+pandas>=2.0.0
+pytesseract>=0.3.10
+rapidfuzz>=3.0.0
+vaderSentiment>=3.3.2
+gensim>=4.3.0
+numpy>=1.24.0
+scipy>=1.11.0
+Werkzeug>=3.0.0

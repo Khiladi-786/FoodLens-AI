@@ -13,6 +13,7 @@ backend/users.db
 
 # User-uploaded files
 backend/static/uploads/*
+!backend/static/uploads/.gitkeep
 
 # macOS
 .DS_Store

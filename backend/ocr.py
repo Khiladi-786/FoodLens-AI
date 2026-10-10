@@ -7,6 +7,11 @@ from rapidfuzz.distance import Levenshtein
 
 logger = logging.getLogger("foodlens_ai")
 
+# Configure Tesseract binary path if explicitly specified in environment
+tesseract_cmd = os.environ.get('TESSERACT_CMD')
+if tesseract_cmd:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
+
 def character_accuracy(ground_truth, ocr_output):
     """Calculate character-level accuracy using Levenshtein distance."""
     distance = Levenshtein.distance(ground_truth, ocr_output)

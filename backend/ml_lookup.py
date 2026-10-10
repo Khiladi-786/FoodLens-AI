@@ -45,7 +45,7 @@ def extract_matching_ingredients(extracted_text, dataset_ingredients):
 
 # ✅ Function to Check Allergen Risk
 def check_allergen_risk(username, extracted_text):
-    db_file = os.path.join(BASE_DIR, "users.db")
+    db_file = os.environ.get('FOODLENS_DB_PATH', os.path.join(BASE_DIR, "users.db"))
     
     try:
         with sqlite3.connect(db_file) as conn:
